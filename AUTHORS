@@ -1,0 +1,14 @@
+project initiator
+    avx
+
+main developer(s)
+    avx
+
+contributors
+    -
+
+code used from other projects
+    python
+    feedparser
+    html2text
+    readability
