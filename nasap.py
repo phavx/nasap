@@ -17,7 +17,6 @@ from io import open
 from os import environ, makedirs, path
 from urllib2 import urlopen
 from sys import argv, exit
-from textwrap import TextWrapper
 from time import gmtime, strftime
 
 # external dependencies
@@ -60,9 +59,6 @@ if not check_create_dir(NEWS_DIR):
 if len(argv) != 2:
     exit(1)
 
-# needed later, setup a textwrap instance
-wrap = TextWrapper(width=80, replace_whitespace=False)
-
 
 URL = argv[1]
 REFERRER = "/".join(URL.split("/")[:3])
@@ -81,8 +77,6 @@ for i in range(0, len(FEED["entries"])):
     h = html2text.HTML2Text(bodywidth=80)
     h.ignore_images = True
     body = h.handle(html)
-    #body = html2text(html, bodywidth=80, ignore_images=True)
-    
 
     # some feed items have really long titles, so better truncate them
     filename = FEED.entries[i].title[:59]
@@ -98,11 +92,9 @@ for i in range(0, len(FEED["entries"])):
     subline = u"┃ " + FEED.entries[i].title[:53] + " ... " + bfill * " " + u"┃ " + posted + u" ┃\n"    
     b_line = u"┗" + 59 * u"━" + u"┻" + 18 * u"━" + u"┛\n\n"
     title = FEED.entries[i].title + "\n\n"
-    #title = wrap.fill(FEED.entries[i].title) + "\n\n"
     pre_links = "\n" + 80 * u"━" + "\nLinks:\n[*] " + FEED.entries[i].link
     
     product = u_line + header + m_line + subline + b_line + title + body + pre_links
-
 
     # finally, write out the finished product
     fh = open(FEED_DIR + "/" + "[" + date +"]-[" + time + "]" + " " + filename, "w")
