@@ -1,7 +1,19 @@
 nasap ***(news as simple as possible)***
 ========================================
 
-[toc]
+* [What is nasap?](https://github.com/phavx/nasap/blob/master/README.md#what-is-nasap)
+* [Why yet another feedreader?](https://github.com/phavx/nasap/blob/master/README.md#why-yet-another-feedreader)
+* [Still, why?](https://github.com/phavx/nasap/blob/master/README.md#still-why)
+* [Things I don't like in existing readers:](https://github.com/phavx/nasap/blob/master/README.md#things-i-dont-like-in-existing-readers)
+* [How does nasap work?](https://github.com/phavx/nasap/blob/master/README.md#how-does-nasap-work)
+* [How can I do things my current/some reader does?](https://github.com/phavx/nasap/blob/master/README.md#how-can-i-do-things-my-currentsome-reader-does)
+* [What do I need to use it?](https://github.com/phavx/nasap/blob/master/README.md#what-do-i-need-to-use-it)
+* [How do I use it?](https://github.com/phavx/nasap/blob/master/README.md#how-do-i-use-it)
+* [Contributions](https://github.com/phavx/nasap/blob/master/README.md#contributions)
+* [Future](https://github.com/phavx/nasap/blob/master/README.md#future)
+* [Authors, Copyright &amp; License](https://github.com/phavx/nasap/blob/master/README.md#authors-copyright--license)
+
+********************************************************************************
 
 ### What is nasap?
 
