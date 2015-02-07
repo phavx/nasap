@@ -141,13 +141,13 @@ github nick, ...).
 ### Future
 
 Quite a few things aren't yet working properly or are planned to make it a
-better experience, please see the _TODO_ file for details.
+better experience, please see the [TODO](https://github.com/phavx/nasap/blob/master/TODO.md) file for details.
 
 
 ### Authors, Copyright & License
 
 The creator and main author is [_avx_](https://github.com/phavx/), contributors
-are listed in the _AUTHORS_ file.
+are listed in the [AUTHORS](https://github.com/phavx/nasap/blob/master/AUTHORS) file.
 
 Licensed under [MIT](http://opensource.org/licenses/MIT)
 
