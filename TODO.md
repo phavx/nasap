@@ -11,7 +11,7 @@ implementation is much more likely.
 
 ### Yes
 
-- [ ] handle "/" in titles so they don't end up in a filename and give an error
+- [x] handle "/" in titles so they don't end up in a filename and give an error
 - [ ] more and better error handling, both of user's faults and malformed feeds
 - [ ] currently we use the time of retrieval for a post, which isn't ideal. We
     should pick the time out of the feed item itself, but making sure to have a
