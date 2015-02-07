@@ -76,8 +76,22 @@ FEED_DIR = NEWS_DIR + "/" + FEED.feed.title
 if not check_create_dir(FEED_DIR):
     error("Error: feed directory %s could not be created." % FEED_DIR, 1)
 
+# list of links we've already seen so we can skip them
+SEEN_FILE = FEED_DIR + "/.seen.links"
+if path.exists(SEEN_FILE):
+    if not path.isfile(SEEN_FILE):
+        error("Error: %s needs to be a file." % SEEN_FILE, 1)
+else:
+    open(SEEN_FILE, 'a').close()
+    
+
 # loop over the feed's items and process them
 for i in range(0, len(FEED["entries"])):
+    # if we already processed the link earlier, skip processing it
+    seen_links = open(FEED_DIR)
+    if FEED.entries[i].link in seen_links:
+        continue
+    
     html = Document(urlopen(FEED.entries[i].link).read()).summary()
 
     # stripping html tags and limiting the width to 80 characters
@@ -103,8 +117,12 @@ for i in range(0, len(FEED["entries"])):
     
     product = u_line + header + m_line + subline + b_line + title + body + pre_links
 
-    # finally, write out the finished product
+    # finally, write out the finished product and store the link as already seen
     fh = open(FEED_DIR + "/" + "[" + date +"]-[" + time + "]" + " " + sanitize_title(filename), "w")
     fh.write(product)
     fh.close()
+    
+    sh = open(SEEN_FILE, 'a')
+    sh.write(FEED.entries[i].link)
+    sh.close()
     

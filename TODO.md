@@ -34,7 +34,7 @@ implementation is much more likely.
     X general threads. Question is, do it in Python or make use of tools such as
     f.e. GNU parallel?
 
-- [ ] speed up the processing by having a system which automatically skips
+- [x] speed up the processing by having a system which automatically skips
     already seen posts. Could rely on the feed items id or it's link, f.e.
 
 - [ ] move all internal links to the bottom
