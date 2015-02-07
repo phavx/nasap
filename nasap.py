@@ -45,6 +45,13 @@ def check_create_dir(directory):
         makedirs(directory)
         return True
 
+def sanitize_title(title):
+    """replace '/' in the title to circumvent unix file path problems"""
+    if "/" in title:
+        return "_".join(title.split("/"))
+    else:
+        return title
+
 # for now nasap doesn't have a config file or runtime options, so make changes
 # in this section if needed
 #
@@ -97,7 +104,7 @@ for i in range(0, len(FEED["entries"])):
     product = u_line + header + m_line + subline + b_line + title + body + pre_links
 
     # finally, write out the finished product
-    fh = open(FEED_DIR + "/" + "[" + date +"]-[" + time + "]" + " " + filename, "w")
+    fh = open(FEED_DIR + "/" + "[" + date +"]-[" + time + "]" + " " + sanitize_title(filename), "w")
     fh.write(product)
     fh.close()
     
