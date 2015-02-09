@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-nasap - news as simple as possible
+"""nasap - news as simple as possible
 
 This is a simple tool to fetch full text posts based on a RSS/Atom feed and
 store it as a simple textfile to later view it with a tool of your choice.
@@ -13,16 +12,16 @@ Information about AUTHORS, TODO and LICENSE can be found in the respective file
 """
 
 # standard libs
-from io import open
-from os import environ, makedirs, path
+from io      import open
+from os      import environ, makedirs, path
 from urllib2 import urlopen
-from sys import argv, exit
-from time import gmtime, strftime
+from sys     import argv, exit
+from time    import gmtime, strftime
 
 # external dependencies
 import feedparser
 import html2text
-from readability.readability import Document
+from   readability.readability import Document
 
 # functions
 def error(msg, code):
@@ -45,19 +44,34 @@ def check_create_dir(directory):
         makedirs(directory)
         return True
 
-def sanitize_title(title):
+def s_title(title):
     """replace '/' in the title to circumvent unix file path problems"""
     if "/" in title:
         return "_".join(title.split("/"))
     else:
         return title
 
-# for now nasap doesn't have a config file or runtime options, so make changes
-# in this section if needed
-#
+def mkheader(feedtitle, feedlink, itemtitle, itemlink, date, time):
+    """builds a nice looking header consiting of some box drawing and infos"""
+    ft, fl, it, il, d ,t = feedtitle, feedlink, itemtitle, itemlink, date, time
+    
+    # calculate how much spacing we need so we can fill the lines nicely
+    f_1 = " " * ( 76 - (len(ft[:53] + fl)) )
+    f_2 = " " * ( 73 - (len(it[:53] + "..." + d + "-" + t) ) )
+    
+    # building a five line header, two for content, three for style
+    return u"┏━" + 76 * u"━"                                       + u"━┓\n" \
+         + u"┃ " + ft[:53]           + f_1 + fl                    + u" ┃\n" \
+         + u"┣━" + 57 * u"━"               + u"┳"  + 18 * u"━"     + u"━┫\n" \
+         + u"┃ " + it[:53]   + "..." + f_2 + u"┃ " +  d + " @" + t + u" ┃\n" \
+         + u"┗━" + 57 * u"━"               + u"┻"  + 18 * u"━"     + u"━┛\n\n"
+
+def mkfooter(itemlink):
+    """adds footer containing link to the original source plus content links"""
+    return "\n" + 80 * u"━" + "\nLinks:\n[*] " + itemlink
+
 # the basedir where all feed items will be stored
 NEWS_DIR = environ["HOME"] + "/news"
-
 
 # some basic sanity checks
 if not check_create_dir(NEWS_DIR):
@@ -65,7 +79,6 @@ if not check_create_dir(NEWS_DIR):
 
 if len(argv) != 2:
     exit(1)
-
 
 URL = argv[1]
 REFERRER = "/".join(URL.split("/")[:3])
@@ -84,7 +97,6 @@ if path.exists(SEEN_FILE):
 else:
     open(SEEN_FILE, 'a').close()
     
-
 # loop over the feed's items and process them
 for i in range(0, len(FEED["entries"])):
     # if we already processed the link earlier, skip processing it
@@ -99,26 +111,18 @@ for i in range(0, len(FEED["entries"])):
     h.ignore_images = True
     body = h.handle(html)
 
-    # some feed items have really long titles, so better truncate them
-    filename = FEED.entries[i].title[:59]
     date, time = current_date_time()
-    posted = "%s-%s" % (date, time)    
+    # some feed items have really long titles, so better truncate them
+    filename = "[%s]-[%s] " +s_title(FEED.entries[i].title[:59])  % (date, time)
 
-    # it's just text, but a nice layout certainly isn't bad, so construct it
-    u_line = u"┏" + 78 * u"━"             + u"┓\n"
-    ufill = 76 - len(FEED.feed.title[:53] + FEED.feed.link)
-    header = u"┃ " + FEED.feed.title[:53] + ufill * " " + FEED.feed.link  + u" ┃\n"
-    m_line = u"┣" +  59 *u"━" + u"┳" + 18* u"━" + u"┫\n"
-    bfill = 74 - (len(FEED.entries[i].title[:53] + " ... " ) + len(posted))
-    subline = u"┃ " + FEED.entries[i].title[:53] + " ... " + bfill * " " + u"┃ " + posted + u" ┃\n"    
-    b_line = u"┗" + 59 * u"━" + u"┻" + 18 * u"━" + u"┛\n\n"
-    title = FEED.entries[i].title + "\n\n"
-    pre_links = "\n" + 80 * u"━" + "\nLinks:\n[*] " + FEED.entries[i].link
-    
-    product = u_line + header + m_line + subline + b_line + title + body + pre_links
+    # build the final product, a nice header, the content and enclosed links    
+    product = mkheader(FEED.feed.title, FEED.feed.link, FEED.entries[i].title, \
+                  FEED.entries[i].link, date, time) \
+            + body \
+            + mkfooter(FEED.entries[i].link)
 
     # finally, write out the finished product and store the link as already seen
-    fh = open(FEED_DIR + "/" + "[" + date +"]-[" + time + "]" + " " + sanitize_title(filename), "w")
+    fh = open(FEED_DIR + "/" + filename, "w")
     fh.write(product)
     fh.close()
     
