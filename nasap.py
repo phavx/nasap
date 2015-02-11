@@ -113,7 +113,7 @@ for i in range(0, len(FEED["entries"])):
 
     date, time = current_date_time()
     # some feed items have really long titles, so better truncate them
-    filename = "[%s]-[%s] " +s_title(FEED.entries[i].title[:59])  % (date, time)
+    filename = "[%s]-[%s] " + s_title(FEED.entries[i].title[:59]) % (date, time)
 
     # build the final product, a nice header, the content and enclosed links    
     product = mkheader(FEED.feed.title, FEED.feed.link, FEED.entries[i].title, \
