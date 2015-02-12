@@ -20,7 +20,7 @@ from time    import gmtime, strftime
 
 # external dependencies
 import feedparser
-import html2text
+from   pypandoc import convert
 from   readability.readability import Document
 
 # functions
@@ -105,11 +105,8 @@ for i in range(0, len(FEED["entries"])):
         continue
     
     html = Document(urlopen(FEED.entries[i].link).read()).summary()
-
-    # stripping html tags and limiting the width to 80 characters
-    h = html2text.HTML2Text(bodywidth=80)
-    h.ignore_images = True
-    body = h.handle(html)
+    body = convert(html, "plain", format="html", \
+                   extra_args=["--reference-links", "--columns=80"])
 
     date, time = current_date_time()
     # some feed items have really long titles, so better truncate them

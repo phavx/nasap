@@ -37,7 +37,7 @@ implementation is much more likely.
 - [x] speed up the processing by having a system which automatically skips
     already seen posts. Could rely on the feed items id or it's link, f.e.
 
-- [ ] move all internal links to the bottom
+- [X] move all internal links to the bottom
 
 ### Maybe
 

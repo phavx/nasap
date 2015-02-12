@@ -9,6 +9,6 @@ stripping everything I'm not interested in and output only plain text readable
 with practically anything.
 
 Requires python (currently only 2.x supported), feedparser, python-readability
-and html2text.
+and pypandoc.
 
 See LICENSE, AUTHORS and TODO for more information.
