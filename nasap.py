@@ -96,11 +96,12 @@ if path.exists(SEEN_FILE):
         error("Error: %s needs to be a file." % SEEN_FILE, 1)
 else:
     open(SEEN_FILE, 'a').close()
+
+seen_links = open(SEEN_FILE).read()
     
 # loop over the feed's items and process them
 for i in range(0, len(FEED["entries"])):
     # if we already processed the link earlier, skip processing it
-    seen_links = open(SEEN_FILE).read()
     if FEED.entries[i].link in seen_links:
         continue
     
